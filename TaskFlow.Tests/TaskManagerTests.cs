@@ -36,4 +36,45 @@ public class TaskManagerTests
         // Act & Assert
         Assert.Throws<ArgumentException>(() => manager.AddTask(null!));
     }
+
+    [Fact]
+    public void GetById_Should_Return_Null_When_Task_Does_Not_Exist()
+    {
+        // Arrange
+        var manager = new TaskManager();
+
+        // Act
+        var task = manager.GetById(Guid.NewGuid());
+
+        // Assert
+        Assert.Null(task);
+    }
+
+    [Fact]
+    public void CompleteTask_Should_Return_False_When_Task_Does_Not_Exist()
+    {
+        // Arrange
+        var manager = new TaskManager();
+
+        // Act
+        var result = manager.CompleteTask(Guid.NewGuid());
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void CompleteTask_Should_Mark_Task_As_Completed()
+    {
+        // Arrange
+        var manager = new TaskManager();
+        var task = manager.AddTask("Corrigir provas");
+
+        // Act
+        var result = manager.CompleteTask(task.Id);
+
+        // Assert
+        Assert.True(result);
+        Assert.True(task.IsCompleted);
+    }
 }
